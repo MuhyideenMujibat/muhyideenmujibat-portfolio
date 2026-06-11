@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mujibat Muhyideen – Laravel Developer</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink:       #0d0f1a;
+    --surface:   #f7f6f2;
+    --card:      #ffffff;
+    --accent:    #2a52f5;
+    --accent2:   #e8401a;
+    --muted:     #6b7080;
+    --border:    #e2e1dc;
+    --tag-bg:    #eef1ff;
+    --tag-txt:   #2a52f5;
+  }
+
+  html { scroll-behavior: smooth; font-size: 16px; }
+
+  body {
+    font-family: 'Space Grotesk', sans-serif;
+    background: var(--surface);
+    color: var(--ink);
+    line-height: 1.6;
+  }
+
+  /* ── NAV ─────────────────────────── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 5vw;
+    height: 60px;
+    background: rgba(247,246,242,.88);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.2rem;
+    letter-spacing: .01em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    text-decoration: none; color: var(--muted);
+    font-size: .875rem; font-weight: 500;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* ── HERO ────────────────────────── */
+  #home {
+    min-height: 100vh;
+    padding: 120px 5vw 80px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: .5rem;
+    font-size: .75rem; font-weight: 600; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--accent);
+    margin-bottom: 1.25rem;
+  }
+  .hero-eyebrow::before {
+    content: ''; width: 28px; height: 2px; background: var(--accent);
+  }
+
+  h1 {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(2.8rem, 5vw, 4.5rem);
+    line-height: 1.08;
+    font-weight: 400;
+    margin-bottom: 1.25rem;
+  }
+  h1 em { font-style: italic; color: var(--accent); }
+
+  .hero-sub {
+    font-size: 1.05rem; color: var(--muted);
+    max-width: 480px; margin-bottom: 2rem;
+    line-height: 1.7;
+  }
+
+  .btn-row { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: .5rem;
+    padding: .7rem 1.6rem;
+    border-radius: 6px;
+    font-size: .9rem; font-weight: 600;
+    text-decoration: none; cursor: pointer;
+    border: none;
+    transition: transform .18s, box-shadow .18s;
+  }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(42,82,245,.22); }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-outline {
+    background: transparent; color: var(--ink);
+    border: 1.5px solid var(--border);
+  }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); box-shadow: none; }
+
+  /* hero right panel */
+  .hero-panel {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    display: flex; flex-direction: column; gap: 1.2rem;
+  }
+  .stat-row { display: flex; gap: 1.5rem; }
+  .stat { flex: 1; }
+  .stat-num {
+    font-family: 'Instrument Serif', serif;
+    font-size: 2.2rem; color: var(--accent);
+    line-height: 1;
+  }
+  .stat-label { font-size: .78rem; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+
+  .skill-chips { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .chip {
+    background: var(--tag-bg); color: var(--tag-txt);
+    padding: .3rem .75rem; border-radius: 999px;
+    font-size: .75rem; font-weight: 600;
+  }
+  .chip-muted { background: #f0eeea; color: var(--muted); }
+
+  /* ── SECTIONS COMMON ─────────────── */
+  section { padding: 90px 5vw; max-width: 1200px; margin: 0 auto; }
+  .section-label {
+    font-size: .75rem; font-weight: 700; letter-spacing: .15em;
+    text-transform: uppercase; color: var(--accent);
+    margin-bottom: .6rem;
+  }
+  h2 {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    font-weight: 400; margin-bottom: 1rem;
+  }
+  .section-intro { color: var(--muted); max-width: 560px; margin-bottom: 3rem; line-height: 1.75; }
+
+  /* ── ABOUT ───────────────────────── */
+  #about-inner {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start;
+  }
+  .about-body p { color: var(--muted); line-height: 1.8; margin-bottom: 1rem; }
+  .timeline { list-style: none; padding-left: 0; margin-top: 2rem; }
+  .timeline li {
+    padding: 1.2rem 0 1.2rem 1.5rem;
+    border-left: 2px solid var(--border);
+    position: relative;
+  }
+  .timeline li::before {
+    content: ''; position: absolute; left: -5px; top: 1.5rem;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent); border: 2px solid var(--surface);
+  }
+  .tl-title { font-weight: 600; font-size: .95rem; }
+  .tl-where { font-size: .82rem; color: var(--accent); font-weight: 500; }
+  .tl-date  { font-size: .78rem; color: var(--muted); margin-top: .15rem; }
+  .tl-body  { font-size: .85rem; color: var(--muted); margin-top: .4rem; line-height: 1.6; }
+
+  /* ── SERVICES ────────────────────── */
+  #services { background: var(--ink); color: #fff; border-radius: 24px; }
+  #services .section-label { color: #6b8eff; }
+  #services h2 { color: #fff; }
+  #services .section-intro { color: rgba(255,255,255,.5); }
+  .services-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+  .srv-card {
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 14px; padding: 1.8rem;
+    transition: background .2s;
+  }
+  .srv-card:hover { background: rgba(42,82,245,.12); }
+  .srv-icon {
+    width: 44px; height: 44px; border-radius: 10px;
+    background: rgba(42,82,245,.18);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; margin-bottom: 1rem;
+  }
+  .srv-card h3 { font-size: 1rem; font-weight: 600; margin-bottom: .6rem; }
+  .srv-card p { font-size: .84rem; color: rgba(255,255,255,.5); line-height: 1.7; }
+
+  /* ── WORK / PROJECTS ─────────────── */
+  .projects-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1.5rem; }
+  .proj-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; overflow: hidden;
+    transition: box-shadow .2s, transform .2s;
+  }
+  .proj-card:hover { box-shadow: 0 12px 32px rgba(0,0,0,.08); transform: translateY(-3px); }
+  .proj-thumb {
+    width: 100%; height: 200px;
+    background: linear-gradient(135deg, #1a1f3a 0%, #2a52f5 100%);
+    position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  /* placeholder mockup inside thumb */
+  .proj-thumb .mock-bar {
+    position: absolute; top: 0; left: 0; right: 0; height: 28px;
+    background: rgba(0,0,0,.35); display: flex; align-items: center;
+    padding: 0 12px; gap: 6px;
+  }
+  .mock-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .d1 { background:#ff5f57; } .d2 { background:#febc2e; } .d3 { background:#28c840; }
+  .proj-thumb .mock-url {
+    margin-left: auto; background: rgba(255,255,255,.12); border-radius: 4px;
+    padding: 2px 10px; font-size: .65rem; color: rgba(255,255,255,.6);
+  }
+  .proj-thumb .mock-content {
+    text-align: center; padding-top: 28px; color: rgba(255,255,255,.6);
+    font-size: .7rem; letter-spacing: .05em; text-transform: uppercase;
+  }
+  .proj-thumb .mock-content .big-icon { font-size: 2rem; display: block; margin-bottom: .4rem; }
+  .proj-thumb img {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; object-position: top;
+  }
+  .proj-body { padding: 1.4rem 1.5rem 1.5rem; }
+  .proj-tags { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: .75rem; }
+  .proj-tag {
+    background: var(--tag-bg); color: var(--tag-txt);
+    font-size: .68rem; font-weight: 600; letter-spacing: .05em;
+    text-transform: uppercase; padding: .2rem .6rem; border-radius: 999px;
+  }
+  .proj-card h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: .4rem; }
+  .proj-card p { font-size: .84rem; color: var(--muted); line-height: 1.65; margin-bottom: 1rem; }
+  .proj-link {
+    display: inline-flex; align-items: center; gap: .35rem;
+    font-size: .82rem; font-weight: 600; color: var(--accent);
+    text-decoration: none;
+  }
+  .proj-link:hover { text-decoration: underline; }
+
+  /* live badge */
+  .live-badge {
+    position: absolute; top: 36px; right: 10px;
+    background: #22c55e; color: #fff;
+    font-size: .62rem; font-weight: 700; letter-spacing: .07em;
+    text-transform: uppercase; padding: .2rem .6rem;
+    border-radius: 999px; display: flex; align-items: center; gap: .3rem;
+  }
+  .live-dot { width: 5px; height: 5px; border-radius: 50%; background: #fff; animation: pulse 1.5s infinite; }
+  @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:.3; } }
+
+  /* ── CONTACT ─────────────────────── */
+  #contact-inner {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start;
+  }
+  .contact-info p { color: var(--muted); margin-bottom: 2rem; line-height: 1.75; }
+  .contact-item {
+    display: flex; align-items: center; gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+  .contact-icon {
+    width: 42px; height: 42px; border-radius: 10px;
+    background: var(--tag-bg); display: flex; align-items: center;
+    justify-content: center; font-size: 1.1rem; flex-shrink: 0;
+  }
+  .contact-item a { color: var(--ink); text-decoration: none; font-size: .9rem; }
+  .contact-item a:hover { color: var(--accent); }
+  .contact-item span { font-size: .72rem; color: var(--muted); display: block; }
+
+  /* form */
+  .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+  .field { display: flex; flex-direction: column; gap: .4rem; }
+  .field label { font-size: .8rem; font-weight: 600; color: var(--muted); letter-spacing: .05em; }
+  .field input, .field textarea {
+    padding: .75rem 1rem; border: 1.5px solid var(--border);
+    border-radius: 8px; font-family: 'Space Grotesk', sans-serif;
+    font-size: .9rem; background: var(--card); color: var(--ink);
+    outline: none; transition: border-color .2s;
+  }
+  .field input:focus, .field textarea:focus { border-color: var(--accent); }
+  .field textarea { resize: vertical; min-height: 120px; }
+
+  /* ── FOOTER ──────────────────────── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 5vw;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 1rem;
+  }
+  footer p { font-size: .82rem; color: var(--muted); }
+  .foot-links { display: flex; gap: 1.5rem; }
+  .foot-links a { font-size: .82rem; color: var(--muted); text-decoration: none; }
+  .foot-links a:hover { color: var(--accent); }
+
+  /* ── RESPONSIVE ──────────────────── */
+  @media (max-width: 768px) {
+    #home, #about-inner, #contact-inner { grid-template-columns: 1fr; gap: 2rem; }
+    .services-grid, .projects-grid { grid-template-columns: 1fr; }
+    .stat-row { gap: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#home" class="nav-logo">Mujibat.dev</a>
+  <ul class="nav-links">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#work">Work</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="home" style="padding-top:120px;">
+  <div>
+    <p class="hero-eyebrow">Laravel Developer · Nigeria</p>
+    <h1>Building <em>scalable</em><br>backends that work.</h1>
+    <p class="hero-sub">
+      4+ years crafting robust PHP/Laravel applications, from fintech platforms to cooperative banking systems. Clean code, secure APIs, real impact.
+    </p>
+    <div class="btn-row">
+      <a href="#work" class="btn btn-primary">View My Work →</a>
+      <a href="#contact" class="btn btn-outline">Get in Touch</a>
+    </div>
+  </div>
+
+  <div class="hero-panel">
+    <div class="stat-row">
+      <div class="stat">
+        <div class="stat-num">4+</div>
+        <div class="stat-label">Years Experience</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">20k+</div>
+        <div class="stat-label">Users Served</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">3+</div>
+        <div class="stat-label">Live Projects</div>
+      </div>
+    </div>
+    <hr style="border:none;border-top:1px solid var(--border);">
+    <div>
+      <p style="font-size:.78rem;font-weight:600;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.6rem;">Core Stack</p>
+      <div class="skill-chips">
+        <span class="chip">PHP</span>
+        <span class="chip">Laravel</span>
+        <span class="chip">MySQL</span>
+        <span class="chip">RESTful APIs</span>
+        <span class="chip">JavaScript</span>
+        <span class="chip">TypeScript</span>
+      </div>
+    </div>
+    <div>
+      <p style="font-size:.78rem;font-weight:600;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.6rem;">Also Works With</p>
+      <div class="skill-chips">
+        <span class="chip chip-muted">HTML/CSS</span>
+        <span class="chip chip-muted">Bootstrap/SASS</span>
+        <span class="chip chip-muted">AJAX</span>
+        <span class="chip chip-muted">Git/GitHub</span>
+        <span class="chip chip-muted">Postman</span>
+        <span class="chip chip-muted">Stripe</span>
+      </div>
+    </div>
+    <div style="background:var(--tag-bg);border-radius:8px;padding:.9rem 1rem;">
+      <p style="font-size:.8rem;color:var(--tag-txt);font-weight:600;">✅ Available for immediate engagement</p>
+      <p style="font-size:.75rem;color:var(--muted);margin-top:.2rem;">Remote-friendly · Full-time or contract</p>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" style="max-width:1200px;margin:0 auto;">
+  <p class="section-label">About Me</p>
+  <div id="about-inner">
+    <div class="about-body">
+      <h2>Code meets<br>purpose.</h2>
+      <p>
+        I'm Mujibat Muhyideen, a Backend Developer based in Ibadan, Nigeria with over four years of hands-on experience building web applications with PHP and Laravel. My work spans fintech, cooperative banking, school management, and e-commerce.
+      </p>
+      <p>
+        I hold a Bachelor of Arts in Linguistics from the University of Ilorin, Kwara State — which means I bring both analytical precision and clear communication to every project. I believe clean code should be as readable as good prose.
+      </p>
+      <p>
+        I thrive on building systems that handle real users at scale — whether that's a cooperative platform serving 20,000+ members or a VTU fintech app processing high-volume transactions in real time.
+      </p>
+      <div style="margin-top:1.5rem;">
+        <a href="mailto:muhyideenmujibat@gmail.com" class="btn btn-primary" style="display:inline-flex;">Email me →</a>
+      </div>
+    </div>
+
+    <div>
+      <p style="font-size:.78rem;font-weight:600;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:1rem;">Experience Timeline</p>
+      <ul class="timeline">
+        <li>
+          <div class="tl-title">Backend Developer (Laravel)</div>
+          <div class="tl-where"><a href="https://fivani.com" target="_blank" style="color:inherit;">Fivani</a></div>
+          <div class="tl-date">July 2025 – Present</div>
+          <div class="tl-body">Developed backend APIs for a contract management platform. Built an admin portal with data visualizations and integrated secure payment processing.</div>
+        </li>
+        <li>
+          <div class="tl-title">Software Developer</div>
+          <div class="tl-where"><a href="https://www.almubarakcooperativesociety.ng" target="_blank" style="color:inherit;">Al-Mubarak Cooperative Society</a></div>
+          <div class="tl-date">Sep 2022 – Apr 2023</div>
+          <div class="tl-body">Built a custom Laravel banking app serving 20,000+ users, including savings, loans, investment modules and a multi-admin system.</div>
+        </li>
+        <li>
+          <div class="tl-title">Software Developer</div>
+          <div class="tl-where"><a href="https://gigstechsolutions.com.ng" target="_blank" style="color:inherit;">Gigs-Tech Solutions</a></div>
+          <div class="tl-date">Aug 2022 – Present</div>
+          <div class="tl-body">Spearheading a comprehensive School Management System (enrollment, results, attendance, fees) and maintaining existing client applications.</div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<div style="padding: 0 5vw; max-width:1200px; margin:0 auto;">
+<section id="services" style="max-width:100%;padding:60px;">
+  <p class="section-label">What I Do</p>
+  <h2>Services</h2>
+  <p class="section-intro">End-to-end backend expertise, from architecture and API design to deployment and optimisation.</p>
+  <div class="services-grid">
+    <div class="srv-card">
+      <div class="srv-icon">🔌</div>
+      <h3>RESTful API Development</h3>
+      <p>Design and build secure, documented REST APIs that integrate cleanly with web and mobile frontends — authentication, versioning, rate-limiting included.</p>
+    </div>
+    <div class="srv-card">
+      <div class="srv-icon">🏗️</div>
+      <h3>Laravel Web Applications</h3>
+      <p>Full-featured web apps using Laravel's MVC pattern — multi-role auth, admin dashboards, data visualizations, and clean, maintainable codebases.</p>
+    </div>
+    <div class="srv-card">
+      <div class="srv-icon">💳</div>
+      <h3>Payment Gateway Integration</h3>
+      <p>Integration with Stripe, Flutterwave, Paystack, and PayPal for secure, reliable transaction processing and wallet management systems.</p>
+    </div>
+    <div class="srv-card">
+      <div class="srv-icon">🛒</div>
+      <h3>eCommerce Platforms</h3>
+      <p>Scalable eCommerce backends with product management, cart systems, order tracking, inventory modules, and admin panels.</p>
+    </div>
+    <div class="srv-card">
+      <div class="srv-icon">⚡</div>
+      <h3>Database Optimization</h3>
+      <p>SQL query profiling, indexing strategies, and schema design to improve application performance and handle growth at scale.</p>
+    </div>
+    <div class="srv-card">
+      <div class="srv-icon">🔧</div>
+      <h3>Maintenance & Refactoring</h3>
+      <p>Auditing, debugging, and refactoring existing Laravel codebases — security patches, performance improvements, and keeping apps up to date.</p>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- WORK -->
+<section id="work" style="max-width:1200px;margin:0 auto;">
+  <p class="section-label">Projects</p>
+  <h2>Selected Work</h2>
+  <p class="section-intro">A mix of client builds and personal projects demonstrating breadth across fintech, banking, HR, and e-commerce.</p>
+
+  <div class="projects-grid">
+
+    <!-- Al-Mubarak -->
+    <div class="proj-card">
+      <div class="proj-thumb" style="background:linear-gradient(135deg,#0a1628 0%,#1a3a6e 100%);">
+        <div class="mock-bar">
+          <span class="mock-dot d1"></span><span class="mock-dot d2"></span><span class="mock-dot d3"></span>
+          <span class="mock-url">almubarakcooperativesociety.ng</span>
+        </div>
+        <span class="live-badge"><span class="live-dot"></span>Live</span>
+        <div class="mock-content">
+          <span class="big-icon">🏦</span>
+          <!-- Replace src below with screenshot of the site homepage -->
+          <img src="https://ibb.co/mrK4gMJx" alt="Al-Mubarak Cooperative Society">
+          Al-Mubarak Cooperative Society
+        </div>
+      </div>
+      <div class="proj-body">
+        <div class="proj-tags">
+          <span class="proj-tag">Laravel</span>
+          <span class="proj-tag">MySQL</span>
+          <span class="proj-tag">Banking</span>
+        </div>
+        <h3>Al-Mubarak Cooperative Society</h3>
+        <p>Custom Laravel banking application serving 20,000+ registered users. Built savings, loans, and investment modules alongside a multi-admin system for full user lifecycle management.</p>
+        <a href="https://www.almubarakcooperativesociety.ng" target="_blank" class="proj-link">Visit Site ↗</a>
+      </div>
+    </div>
+
+    <!-- Fivani -->
+    <div class="proj-card">
+      <div class="proj-thumb" style="background:linear-gradient(135deg,#0d0f1a 0%,#2a52f5 100%);">
+        <div class="mock-bar">
+          <span class="mock-dot d1"></span><span class="mock-dot d2"></span><span class="mock-dot d3"></span>
+          <span class="mock-url">fivani.com</span>
+        </div>
+        <span class="live-badge"><span class="live-dot"></span>Live</span>
+        <div class="mock-content">
+          <span class="big-icon">📄</span>
+          Replace with: <img src="https://ibb.co/Kz09JmvH" alt="Fivani Contract Platform">
+          Fivani Contract Platform
+        </div>
+      </div>
+      <div class="proj-body">
+        <div class="proj-tags">
+          <span class="proj-tag">Laravel</span>
+          <span class="proj-tag">REST API</span>
+          <span class="proj-tag">Fintech</span>
+        </div>
+        <h3>Fivani – Contract Management Platform</h3>
+        <p>Backend APIs enabling contract creation, modification, and payment tracking. Includes a full admin portal with charts and analytics dashboards for monitoring platform activity.</p>
+        <a href="https://fivani.com" target="_blank" class="proj-link">Visit Site ↗</a>
+      </div>
+    </div>
+
+    <!-- Gigs-Tech -->
+    <div class="proj-card">
+      <div class="proj-thumb" style="background:linear-gradient(135deg,#1a2e1a 0%,#2d7a3a 100%);">
+        <div class="mock-bar">
+          <span class="mock-dot d1"></span><span class="mock-dot d2"></span><span class="mock-dot d3"></span>
+          <span class="mock-url">gigstechsolutions.com.ng</span>
+        </div>
+        <!-- <span class="live-badge"><span class="live-dot"></span>Live</span> -->
+        <div class="mock-content">
+          <span class="big-icon">🏫</span>
+          <!-- Replace with: <img src="gigtech-screenshot.jpg" alt="Gigs-Tech School System"> -->
+          School Management System
+        </div>
+      </div>
+      <div class="proj-body">
+        <div class="proj-tags">
+          <span class="proj-tag">Laravel</span>
+          <span class="proj-tag">School ERP</span>
+          <span class="proj-tag">HR</span>
+        </div>
+        <h3>Gigs-Tech – School Management System</h3>
+        <p>Comprehensive school ERP covering student enrollment, result processing, attendance tracking, and fee management. Also developed an HR application and inventory system during internship.</p>
+        <a href="https://gigstechsolutions.com.ng" target="_blank" class="proj-link">Visit Site ↗</a>
+      </div>
+    </div>
+
+    <!-- VTU Platform -->
+    <div class="proj-card">
+      <div class="proj-thumb" style="background:linear-gradient(135deg,#1f0a30 0%,#7c3aed 100%);">
+        <div class="mock-bar">
+          <span class="mock-dot d1"></span><span class="mock-dot d2"></span><span class="mock-dot d3"></span>
+          <span class="mock-url">Personal Project</span>
+        </div>
+        <div class="mock-content">
+          <span class="big-icon">📱</span>
+          <!-- Replace with: <img src="vtu-screenshot.jpg" alt="VTU Platform"> -->
+          VTU & Utility Services
+        </div>
+      </div>
+      <div class="proj-body">
+        <div class="proj-tags">
+          <span class="proj-tag">Laravel</span>
+          <span class="proj-tag">Fintech</span>
+          <span class="proj-tag">Wallet</span>
+        </div>
+        <h3>VTU & Utility Services Platform</h3>
+        <p>Full-stack fintech app for airtime purchase, bill payments, and result checking. Scalable architecture for high-volume transactions with real-time updates, user wallet management, and admin dashboards.</p>
+        <span style="font-size:.78rem;color:var(--muted);">Personal Project · Actively used by clients</span>
+      </div>
+    </div>
+
+    <!-- E-Commerce -->
+    <div class="proj-card">
+      <div class="proj-thumb" style="background:linear-gradient(135deg,#2a1000 0%,#e8401a 100%);">
+        <div class="mock-bar">
+          <span class="mock-dot d1"></span><span class="mock-dot d2"></span><span class="mock-dot d3"></span>
+          <span class="mock-url">Personal Project</span>
+        </div>
+        <div class="mock-content">
+          <span class="big-icon">🛍️</span>
+          <!-- Replace with: <img src="ecommerce-screenshot.jpg" alt="E-Commerce Platform"> -->
+          E-Commerce Platform
+        </div>
+      </div>
+      <div class="proj-body">
+        <div class="proj-tags">
+          <span class="proj-tag">Laravel</span>
+          <span class="proj-tag">Stripe</span>
+          <span class="proj-tag">eCommerce</span>
+        </div>
+        <h3>E-Commerce Platform</h3>
+        <p>Full-featured eCommerce platform with product listings, user auth, cart, and Stripe payment integration. Admin panel for inventory and order management, optimised for performance and responsiveness.</p>
+        <span style="font-size:.78rem;color:var(--muted);">Personal Project</span>
+      </div>
+    </div>
+
+    <!-- Aircare -->
+    <div class="proj-card">
+      <div class="proj-thumb" style="background:linear-gradient(135deg,#0a2020 0%,#0d9488 100%);">
+        <div class="mock-bar">
+          <span class="mock-dot d1"></span><span class="mock-dot d2"></span><span class="mock-dot d3"></span>
+          <span class="mock-url">Personal Project</span>
+        </div>
+        <div class="mock-content">
+          <span class="big-icon">💅</span>
+          <!-- Replace with: <img src="aircare-screenshot.jpg" alt="Aircare Booking"> -->
+          Haircare Booking System
+        </div>
+      </div>
+      <div class="proj-body">
+        <div class="proj-tags">
+          <span class="proj-tag">Laravel</span>
+          <span class="proj-tag">Booking</span>
+          <span class="proj-tag">Real-time</span>
+        </div>
+        <h3>Haircare Salon Booking System</h3>
+        <p>Booking platform for manicure and pedicure appointments with preferred dates, times, and staff selection. Real-time availability tracking, staff notifications, and a booking history to prevent double-bookings.</p>
+        <span style="font-size:.78rem;color:var(--muted);">Personal Project</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" style="max-width:1200px;margin:0 auto;">
+  <p class="section-label">Contact</p>
+  <div id="contact-inner">
+    <div class="contact-info">
+      <h2>Let's build<br>something solid.</h2>
+      <p>Whether you need a new Laravel backend, an API integration, or to scale an existing system — reach out and let's talk about what you're building.</p>
+
+      <div class="contact-item">
+        <div class="contact-icon">✉️</div>
+        <div>
+          <span>Email</span>
+          <a href="mailto:muhyideenmujibat@gmail.com">muhyideenmujibat@gmail.com</a>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📞</div>
+        <div>
+          <span>Phone / WhatsApp</span>
+          <a href="tel:+2349157751450">+234 915 775 1450</a>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">🔗</div>
+        <div>
+          <span>LinkedIn</span>
+          <a href="https://www.linkedin.com/in/muhyideen-mujibat-326557326" target="_blank">muhyideen-mujibat</a>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📍</div>
+        <div>
+          <span>Location</span>
+          <a>Ibadan, Oyo State, Nigeria</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-form">
+      <div class="field">
+        <label>YOUR NAME</label>
+        <input type="text" placeholder="Adaeze Okonkwo">
+      </div>
+      <div class="field">
+        <label>EMAIL ADDRESS</label>
+        <input type="email" placeholder="you@company.com">
+      </div>
+      <div class="field">
+        <label>SUBJECT</label>
+        <input type="text" placeholder="Laravel project / API work / Collaboration">
+      </div>
+      <div class="field">
+        <label>MESSAGE</label>
+        <textarea placeholder="Tell me about your project…"></textarea>
+      </div>
+      <a href="mailto:muhyideenmujibat@gmail.com" class="btn btn-primary" style="display:inline-flex;align-self:flex-start;">Send Message →</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 Mujibat Muhyideen · Laravel Developer · Ibadan, Nigeria</p>
+  <div class="foot-links">
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#work">Work</a>
+    <a href="mailto:muhyideenmujibat@gmail.com">Email</a>
+    <a href="https://www.linkedin.com/in/muhyideen-mujibat-326557326" target="_blank">LinkedIn</a>
+  </div>
+</footer>
+
+</body>
+</html>
